@@ -8,9 +8,7 @@ export class EditTodo extends Component {
     super(props);
 
     this.state = {
-      //you can fetch the todo item from the props and populate here,
-      //but you need to first check if the todo value is available
-      gg:false,
+      gg: false,
       todo: ""
     };
   }
@@ -31,20 +29,10 @@ export class EditTodo extends Component {
 
   render() {
     const { todo, requesting, requested } = this.props;
-    console.log('props',this.props);
-    console.log('state',this.state);
+    console.log("props", this.props);
+    console.log("state", this.state);
 
-    if (requesting === true) {
-      return <p>Loading...</p>
-    }
-    if (requested === true && !todo) {
-      return <p>Nothing here</p>
-    }
-    if (requested === true && todo && !this.state.gg){
-      this.setState({todo: todo, gg: true})
-    } 
-    if(this.state.gg){
-    return (
+    const jsx = (
       <form className="form" onSubmit={this.handleSubmit}>
         <div className="">
           <input
@@ -57,8 +45,24 @@ export class EditTodo extends Component {
         <button type="submit">Submit</button>
       </form>
     );
+
+    if (!this.props.location.pathname) {
+      return jsx;
+    } else {
+      if (requesting === true) {
+        return <p>Loading...</p>;
+      }
+      if (requested === true && !todo) {
+        return <p>Nothing here</p>;
+      }
+      if (requested === true && todo && !this.state.gg) {
+        this.setState({ todo: todo, gg: true });
+      }
+      if (this.state.gg) {
+        return jsx;
+      }
+      return null;
     }
-    return null
   }
 }
 
