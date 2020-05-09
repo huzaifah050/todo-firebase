@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { addTodo, deleteTodo, dispatchEditId } from "./store/actions";
+import { addTodo, deleteTodo} from "./store/actions";
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -79,12 +79,11 @@ class Todos extends Component {
                   >
                     Delete
                   </button>
-                  <button
-                    onClick={()}
-                    className="edit"
+                  <Link
+                    to={`/edit/${todo.id}`}
                   >
                     Edit
-                  </button>
+                  </Link>
                 </div>
               </div>
             );
@@ -139,8 +138,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addTodo,
-  deleteTodo,
-  dispatchEditId,
+  deleteTodo
 };
 
 export default compose(
