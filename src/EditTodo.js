@@ -10,10 +10,8 @@ export class EditTodo extends Component {
     this.state = {
       //you can fetch the todo item from the props and populate here,
       //but you need to first check if the todo value is available
-      todo:
-        this.props.requested === true && this.props.todo.todo
-          ? this.props.todo.todo
-          : ""
+      gg:false,
+      todo: ""
     };
   }
 
@@ -32,22 +30,35 @@ export class EditTodo extends Component {
   };
 
   render() {
-    const { todo } = this.props;
-    console.log(todo);
-    console.log(this.props);
+    const { todo, requesting, requested } = this.props;
+    console.log('props',this.props);
+    console.log('state',this.state);
+
+    if (requesting === true) {
+      return <p>Loading...</p>
+    }
+    if (requested === true && !todo) {
+      return <p>Nothing here</p>
+    }
+    if (requested === true && todo && !this.state.gg){
+      this.setState({todo: todo, gg: true})
+    } 
+    if(this.state.gg){
     return (
       <form className="form" onSubmit={this.handleSubmit}>
         <div className="">
           <input
             type="text"
             id="todo"
-            value={this.state.todo}
+            value={this.state.todo.todo}
             onChange={this.handleChange}
           />
         </div>
         <button type="submit">Submit</button>
       </form>
     );
+    }
+    return null
   }
 }
 
@@ -60,6 +71,7 @@ const mapStateToProps = (state, ownProps) => {
       : null,
     // this prop exist on the firestore reducer
     // helps you to check whether the items are fully loaded or not
+    requesting: state.firestore.status.requesting.todos,
     requested: state.firestore.status.requested.todos,
   };
 };
