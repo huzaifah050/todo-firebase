@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
 
 export class EditTodo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todo: '',
+      //you can fetch the todo item from the props and populate here,
+      //but you need to first check if the todo value is available
+      todo:
+        this.props.requested === true && this.props.todo.todo
+          ? this.props.todo.todo
+          : ""
     };
   }
 
@@ -53,6 +58,9 @@ const mapStateToProps = (state, ownProps) => {
     todo: state.firestore.ordered.todos
       ? state.firestore.ordered.todos.find((todo) => todo.id === id)
       : null,
+    // this prop exist on the firestore reducer
+    // helps you to check whether the items are fully loaded or not
+    requested: state.firestore.status.requested.todos,
   };
 };
 
@@ -60,5 +68,5 @@ const mapDispatchToProps = {};
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([{ collection: 'todos' }])
+  firestoreConnect([{ collection: "todos" }])
 )(EditTodo);
