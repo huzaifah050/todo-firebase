@@ -8,8 +8,14 @@ export class EditTodo extends Component {
     super(props);
 
     this.state = {
+ edit-page-display-loader-everytime
       gg: false,
       todo: ""
+
+      //you can fetch the todo item from the props and populate here,
+      //but you need to first check if the todo value is available
+      todo: this.props.todo ? this.props.todo : "",
+ master
     };
   }
 
@@ -67,9 +73,8 @@ export class EditTodo extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let id = ownProps.match.params.id;
-
   return {
+ edit-page-display-loader-everytime
     todo: state.firestore.ordered.todos
       ? state.firestore.ordered.todos.find((todo) => todo.id === id)
       : null,
@@ -77,6 +82,10 @@ const mapStateToProps = (state, ownProps) => {
     // helps you to check whether the items are fully loaded or not
     requesting: state.firestore.status.requesting.todos,
     requested: state.firestore.status.requested.todos,
+
+    todo: state.project.editTodoItem.todo,
+    item: state.project
+ master
   };
 };
 
