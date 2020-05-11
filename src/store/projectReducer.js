@@ -1,5 +1,6 @@
 const initState = {
   todos: [],
+  editTodoItem: null
 };
 
 const projectReducer = (state = initState, action) => {
@@ -19,6 +20,9 @@ const projectReducer = (state = initState, action) => {
     case 'DELETE_TODO_ERROR':
       console.log('delete error', action.err);
       return state;
+    case "DISPATCH_EDIT_TODO":
+      console.log("edit todo reached", action.todo);
+      return {...state, editTodoItem: action.todo}
     default:
       return state;
   }

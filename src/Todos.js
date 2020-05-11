@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { addTodo, deleteTodo } from './store/actions';
-import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
-import { Redirect, Link } from 'react-router-dom';
-import moment from 'moment';
+import React, { Component } from "react";
+import { addTodo, deleteTodo, dispatchEditTodo } from "./store/actions";
+import { connect } from "react-redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+import { Redirect, Link } from "react-router-dom";
+import moment from "moment";
 
 class Todos extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todo: '',
+      todo: "",
     };
   }
 
@@ -25,8 +25,13 @@ class Todos extends Component {
     e.preventDefault();
     this.props.addTodo(this.state);
     this.setState({
-      todo: '',
+      todo: "",
     });
+  };
+
+  handleDispatchEdit = (id) => {
+    this.props.dispatchEditId(id);
+    return <Redirect to={`/edit/${id}`} />;
   };
 
   render() {
@@ -51,7 +56,7 @@ class Todos extends Component {
             </div>
           );
         })
-      : 'loading...';
+      : "loading...";
 
     const personalTodos = todos
       ? todos.map((todo) => {
@@ -74,9 +79,15 @@ class Todos extends Component {
                   >
                     Delete
                   </button>
-                  <Link to = {'/edit/' + todo.id}  >
-                    <button className="edit">Edit</button>
-                  </Link>
+                  <button
+                    onClick={() => {
+                      this.props.dispatchEditTodo(todo);
+                      return this.props.history.push(`/edit/${todo.id}`);
+                    }}
+                    className="edit"
+                  >
+                    Edit
+                  </button>
                 </div>
               </div>
             );
@@ -132,9 +143,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   addTodo,
   deleteTodo,
+  dispatchEditTodo,
 };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  firestoreConnect([{ collection: 'todos' }])
+  firestoreConnect([{ collection: "todos" }])
 )(Todos);

@@ -15,7 +15,7 @@ export const addTodo = (newTodo) => {
     const profile = getState().firebase.profile;
     const id = getState().firebase.auth.uid;
     firestore
-      .collection('todos')
+      .collection("todos")
       .add({
         ...newTodo,
         name: profile.name,
@@ -27,11 +27,11 @@ export const addTodo = (newTodo) => {
       })
       .then(() => {
         // console.log(getState().firebase.auth.uid);
-        dispatch({ type: 'ADD_TODO', newTodo });
+        dispatch({ type: "ADD_TODO", newTodo });
       })
       .catch((err) => {
         // console.log(err.message);
-        dispatch({ type: 'ADD_TODO_ERROR', err });
+        dispatch({ type: "ADD_TODO_ERROR", err });
       });
   };
 };
@@ -40,14 +40,14 @@ export const deleteTodo = (id) => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     firestore
-      .collection('todos')
+      .collection("todos")
       .doc(id)
       .delete()
       .then(() => {
-        dispatch({ type: 'DELETE_TODO' });
+        dispatch({ type: "DELETE_TODO" });
       })
       .catch((err) => {
-        dispatch({ type: 'DELETE_TODO_ERROR', err: err.message });
+        dispatch({ type: "DELETE_TODO_ERROR", err: err.message });
       });
   };
 };
@@ -57,3 +57,12 @@ export const deleteTodo = (id) => {
 //     type: 'DELETE_TODO',
 //   };
 // };
+
+export const dispatchEditTodo = (todo) => {
+  return (dispatch) => {
+    dispatch({
+      type: "DISPATCH_EDIT_TODO",
+      todo,
+    });
+  };
+};
