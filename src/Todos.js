@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+ edit-page-display-loader-everytime
+import { addTodo, deleteTodo} from "./store/actions";
+=======
 import { addTodo, deleteTodo, dispatchEditTodo } from "./store/actions";
+ master
 import { connect } from "react-redux";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
@@ -31,7 +35,11 @@ class Todos extends Component {
 
   handleDispatchEdit = (id) => {
     this.props.dispatchEditId(id);
+ edit-page-display-loader-everytime
+    return <Redirect to={`/edit/${id}`} />
+
     return <Redirect to={`/edit/${id}`} />;
+ master
   };
 
   render() {
@@ -79,6 +87,13 @@ class Todos extends Component {
                   >
                     Delete
                   </button>
+ edit-page-display-loader-everytime
+                  <Link
+                    to={`/edit/${todo.id}`}
+                  >
+                    Edit
+                  </Link>
+
                   <button
                     onClick={() => {
                       this.props.dispatchEditTodo(todo);
@@ -88,6 +103,7 @@ class Todos extends Component {
                   >
                     Edit
                   </button>
+
                 </div>
               </div>
             );
@@ -142,8 +158,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   addTodo,
+ edit-page-display-loader-everytime
+  deleteTodo
+
   deleteTodo,
   dispatchEditTodo,
+master
 };
 
 export default compose(
